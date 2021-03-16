@@ -60,12 +60,8 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
   let book
   try {
     book = await Book.findByPk(req.params.id)
-    if (book) {
-      await book.update(req.body)
-      res.redirect('/books/')
-    } else {
-      res.sendStatus(404)
-    }
+    await book.update(req.body)
+    res.redirect('/books/')
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
@@ -93,6 +89,5 @@ router.use((req, res, next) => {
     }
   })
 })
-
 
 module.exports = router
