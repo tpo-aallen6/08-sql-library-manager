@@ -2,24 +2,23 @@ const express = require('express')
 const router = express.Router()
 const Book = require('../models').Book
 
-/* Handler function to wrap each route. From Treehouse Express Workshop*/
+/* Handler function to wrap each route */
 function asyncHandler (cb) {
   return async (req, res, next) => {
     try {
       await cb(req, res, next)
     } catch (error) {
-      // Forward error to the global error handler
       next(error)
     }
   }
 }
 
-/* GET home page - redirect */
+/* GET redirect root path to all books route */
 router.get('/', (req, res, next) => {
   res.redirect('/books')
 })
 
-/* GET home page */
+/* GET home page route */
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll()
   res.render('index', { books, title: 'Books' })
