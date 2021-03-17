@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const Book = require('../models').Book
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 /* Handler function to wrap each route */
-function asyncHandler (cb) {
+function asyncHandler (callback) {
   return async (req, res, next) => {
     try {
-      await cb(req, res, next)
+      await callback(req, res, next)
     } catch (error) {
       next(error)
     }
@@ -21,12 +23,18 @@ router.get('/', (req, res, next) => {
 /* GET home page route */
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll()
-  res.render('index', { books, title: 'Books' })
+  res.render('index', {
+    books: books,
+    title: 'Books'
+  })
 }))
 
 /* GET new book form */
 router.get('/books/new', asyncHandler(async (req, res) => {
-  res.render('new-book', { book: {}, title: 'New Book' })
+  res.render('new-book', {
+    book: {},
+    title: 'New Book'
+  })
 }))
 
 /* POST new book form */
@@ -38,7 +46,11 @@ router.post('/books/new', asyncHandler(async (req, res) => {
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
-      res.render('new-book', { book, title: 'New Book', errors: error.errors })
+      res.render('new-book', {
+        book: book,
+        title: 'New Book',
+        errors: error.errors
+      })
     } else {
       throw error
     }
@@ -49,7 +61,9 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 router.get('/books/:id', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
   if (book) {
-    res.render('update-book', { book: book })
+    res.render('update-book', {
+      book: book
+    })
   } else {
     res.render('page-not-found')
   }
@@ -65,7 +79,11 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
-      res.render('update-book', { book, title: 'Update Book', errors: error.errors })
+      res.render('update-book', {
+        book: book,
+        title: 'Update Book',
+        errors: error.errors
+      })
     } else {
       throw error
     }
@@ -77,6 +95,37 @@ router.post('/books/:id/delete', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
   await book.destroy()
   res.redirect('/books')
+}))
+
+router.get('/search', asyncHandler(async (req, res) => {
+  const term = req.query.term
+  const books = await Book.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.like]: '%' + term + '%'
+          }
+        },
+        {
+          author: {
+            [Op.like]: '%' + term + '%'
+          }
+        },
+        {
+          genre: {
+            [Op.like]: '%' + term + '%'
+          }
+        },
+        {
+          year: {
+            [Op.like]: '%' + term + '%'
+          }
+        }
+      ]
+    }
+  })
+  res.render('search-results', { books, title: 'Books' })
 }))
 
 /* page not found */
