@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
     form(action='/search')
+      label(id='search-bar') Press enter to search:
+      br
       input(type='search', placeholder='Search...' name='term')
     p
       a.button(href='/books/new') Create New Book
@@ -21,3 +23,13 @@ block content
           td #{book.author}
           td #{book.genre}
           td #{book.year}
+
+  br
+
+  if pageNumber === 1
+    a.button(href='/books/page/' + (pageNumber + 1)) Next page
+  else if pageNumber > 1 && pageNumber < numberOfPages
+    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page
+    a.button(id='next-page' href='/books/page/' + (pageNumber + 1)) Next Page
+  else if pageNumber === numberOfPages
+    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page

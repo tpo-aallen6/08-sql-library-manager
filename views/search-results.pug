@@ -3,11 +3,13 @@ extends layout
 block content
   h1= title
     form(action='/search')
+      label(id='search-bar') Press enter to search:
+      br
       input(type='search', placeholder='Search...' name='term')
     p
       a.button(href='/books/new') Create New Book
       br
-      a.button(href='/books') Home
+      a.button(href='/books/page/1') Home
   table
     thead
       tr

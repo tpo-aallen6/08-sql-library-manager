@@ -17,15 +17,31 @@ function asyncHandler (callback) {
 
 /* GET redirect root path to all books route */
 router.get('/', (req, res, next) => {
-  res.redirect('/books')
+  res.redirect('/books/page/1')
 })
 
 /* GET home page route */
-router.get('/books', asyncHandler(async (req, res) => {
-  const books = await Book.findAll()
+router.get('/books/page/:pageNumber', asyncHandler(async (req, res) => {
+  const booksPerPage = 10
+  const pageNumber = parseInt(req.params.pageNumber || 0)
+  const skip = booksPerPage * (pageNumber - 1)
+
+  const books = await Book.findAndCountAll({
+    offset: skip,
+    limit: booksPerPage
+  })
+
+  const numberOfPages = Math.ceil(books.count / booksPerPage)
+
+  if (pageNumber < 1 || pageNumber > numberOfPages) {
+    res.redirect('/books/page/1')
+  }
+
   res.render('index', {
-    books: books,
-    title: 'Books'
+    books: books.rows,
+    title: 'Books',
+    pageNumber,
+    numberOfPages
   })
 }))
 
@@ -42,7 +58,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
   let book
   try {
     book = await Book.create(req.body)
-    res.redirect('/books')
+    res.redirect('/books/page/1')
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
@@ -75,7 +91,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
   try {
     book = await Book.findByPk(req.params.id)
     await book.update(req.body)
-    res.redirect('/books/')
+    res.redirect('/books/page/1')
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body)
@@ -94,7 +110,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
 router.post('/books/:id/delete', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id)
   await book.destroy()
-  res.redirect('/books')
+  res.redirect('/books/page/1')
 }))
 
 router.get('/search', asyncHandler(async (req, res) => {
