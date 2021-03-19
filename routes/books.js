@@ -28,7 +28,8 @@ router.get('/books/page/:pageNumber', asyncHandler(async (req, res) => {
 
   const books = await Book.findAndCountAll({
     offset: skip,
-    limit: booksPerPage
+    limit: booksPerPage,
+    order: ['genre']
   })
 
   const numberOfPages = Math.ceil(books.count / booksPerPage)
@@ -139,7 +140,8 @@ router.get('/search', asyncHandler(async (req, res) => {
           }
         }
       ]
-    }
+    },
+    order: ['genre']
   })
   res.render('search-results', { books, title: 'Books' })
 }))

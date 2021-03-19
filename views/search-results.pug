@@ -5,23 +5,29 @@ block content
     form(action='/search')
       label(id='search-bar') Press enter to search:
       br
-      input(type='search', placeholder='Search...' name='term')
+      input(type='search', placeholder='enter search text' name='term')
     p
       a.button(href='/books/new') Create New Book
       br
-      a.button(href='/books/page/1') Home
-  table
-    thead
-      tr
-        th Title
-        th Author
-        th Genre
-        th Year
-    tbody
-      each book in books
+
+  if books.length > 0    
+    table
+      thead
         tr
-          td
-            a(href='/books/' + book.id) #{book.title}
-          td #{book.author}
-          td #{book.genre}
-          td #{book.year}
+          th Title
+          th Author
+          th Genre
+          th Year
+      tbody
+        each book in books
+          tr
+            td
+              a(href='/books/' + book.id) #{book.title}
+            td #{book.author}
+            td #{book.genre}
+            td #{book.year}
+  else
+    p No results found
+
+  p
+    a.button(href='/books/page/1') Home

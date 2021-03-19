@@ -39,6 +39,10 @@ a.button, input[type=submit] {
   font-size: medium;
 }
 
+#home-page {
+  margin-left: 5px;
+}
+
 form a.button, input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;
