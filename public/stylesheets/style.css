@@ -1,17 +1,18 @@
 body {
   padding: 10px 50px 50px;
   font: 18px "Garamond", serif;
+  background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(1,152,117,1));
 }
 
 a {
-  color: #019875;
+  color: #000000;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;
 }
 
   a:hover {
-    color: black;
+    color: rgb(173, 4, 4);
   }
 
 a.button, input[type=submit] {
@@ -21,6 +22,7 @@ a.button, input[type=submit] {
   padding: 10px 14px 12px;
   font-size: 14px;
   border-radius: 2px;
+  border: 2px solid black;
   cursor: pointer;
 }
 
@@ -35,8 +37,20 @@ a.button, input[type=submit] {
   margin-left: 5px;
 }
 
+#create-new-book-input {
+  border: 2px solid black;
+}
+
+#update-book-input {
+  border: 2px solid black;
+}
+
+#delete-book-input {
+  border: 2px solid black;
+}
+
 #search-bar {
-  font-size: medium;
+  font-size: large;
 }
 
 #home-page {
@@ -73,12 +87,14 @@ h2 {
 }
 
 th {
-  border-bottom: 2px solid #D8B493;
+  border-bottom: 2px solid #000000;
   text-align: left;
   padding: 5px 20px 5px 10px;
 }
 
 tr {
+  color: black;
+  font-weight: bold;
   min-height: 50px;
 }
 

@@ -4,7 +4,10 @@ const Book = require('../models').Book
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
-/* Handler function to wrap each route */
+/**
+ * @param  {} callback
+ *
+ */
 function asyncHandler (callback) {
   return async (req, res, next) => {
     try {
@@ -20,10 +23,14 @@ router.get('/', (req, res, next) => {
   res.redirect('/books/page/1')
 })
 
+router.get('/books', (req, res, next) => {
+  res.redirect('/books/page/1')
+})
+
 /* GET home page route */
 router.get('/books/page/:pageNumber', asyncHandler(async (req, res) => {
   const booksPerPage = 10
-  const pageNumber = parseInt(req.params.pageNumber || 0)
+  const pageNumber = parseInt(req.params.pageNumber) || 0
   const skip = booksPerPage * (pageNumber - 1)
 
   const books = await Book.findAndCountAll({

@@ -27,10 +27,11 @@ block content
   br
 
   if pageNumber === 1
-    a.button(href='/books/page/' + (pageNumber + 1)) Next page
+    a.button(href='/books/page/' + numberOfPages) Last page (#{numberOfPages}/#{numberOfPages})
+    a.button(id='next-page' href='/books/page/' + (pageNumber + 1)) Next page (#{pageNumber + 1}/#{numberOfPages})
   else if pageNumber > 1 && pageNumber < numberOfPages
-    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page
-    a.button(id='next-page' href='/books/page/' + (pageNumber + 1)) Next Page
+    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page (#{pageNumber - 1}/#{numberOfPages})
+    a.button(id='next-page' href='/books/page/' + (pageNumber + 1)) Next Page (#{pageNumber + 1}/#{numberOfPages})
   else if pageNumber === numberOfPages
-    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page
-    a.button(id='home-page' href='/books/page/1') Home
+    a.button(href='/books/page/' + (pageNumber - 1)) Previous Page (#{pageNumber - 1}/#{numberOfPages})
+    a.button(id='home-page' href='/books/page/1') First Page (1/#{numberOfPages})
