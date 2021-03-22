@@ -1,14 +1,10 @@
 extends layout
 
 block content
-  h1= title
-    form(action='/search')
-      label(id='search-bar') Press enter to search:
-      br
-      input(type='search', placeholder='enter search text' name='term')
-    p
-      a.button(href='/books/new') Create New Book
-      br
+  h1= title 
+    br 
+    a.button(href='/books/new') Create New Book  
+    a.button(id='show-all-books' href='/books/page/1') All Books
 
   if books.length > 0    
     table
@@ -28,6 +24,3 @@ block content
             td #{book.year}
   else
     p No results found
-
-  p
-    a.button(href='/books/page/1') All Books

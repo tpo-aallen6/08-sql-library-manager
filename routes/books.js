@@ -82,7 +82,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 }))
 
 /* GET books/:id - shows detailed info */
-router.get('/books/:id', asyncHandler(async (req, res) => {
+router.get('/books/:id', asyncHandler(async (req, res, error) => {
   const book = await Book.findByPk(req.params.id)
   if (book) {
     res.render('update-book', {
@@ -156,9 +156,8 @@ router.get('/search', asyncHandler(async (req, res) => {
 /* page not found */
 router.use((req, res, next) => {
   res.render('page-not-found', {
-    err:
-    {
-      message: 'That page does not exist, please go back.',
+    error: {
+      message: 'Page not found',
       status: 404
     }
   })
