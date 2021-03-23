@@ -157,7 +157,7 @@ router.get('/search', asyncHandler(async (req, res) => {
 router.use((req, res, next) => {
   res.render('page-not-found', {
     error: {
-      message: 'Page not found',
+      message: 'Sorry! We could not find the page you were looking for.',
       status: 404
     }
   })
